@@ -1,0 +1,12 @@
+click
+flask
+python-dotenv
+psycopg2-binary
+gunicorn
+importlib-metadata
+itsdangerous
+Jinja2
+MarkupSafe
+typing-extensions
+Werkzeug
+zipp
