@@ -1,7 +1,8 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, request
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
 
 CREATE_CATEGORIES_TABLE = (
     "CREATE TABLE IF NOT EXISTS categories (id SERIAL PRIMARY KEY, name TEXT);"
@@ -19,6 +20,7 @@ load_dotenv()
 
 app = Flask(__name__)
 url = os.getenv("DATABASE_URL")
+url_alchemy = os.getenv("SQLALCHEMY_DATABASE_URI")
 connection = psycopg2.connect(url)
 
 @app.post("/api/category")
@@ -33,11 +35,13 @@ def create_category():
     return {"id": category_id, "message": f"Category {name} created."}, 201
 
 
+db = SQLAlchemy(app)
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+
 @app.get("/api/categories")
 def get_all_categories():
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute(GET_ALL_CATEGORIES)
-            categories = cursor.fetchall()
-    
-    return categories
+    categories = Category.query.all()
+    return jsonify({'categories': [category.name for category in categories]})
