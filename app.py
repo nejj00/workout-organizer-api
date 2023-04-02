@@ -20,21 +20,9 @@ load_dotenv()
 
 app = Flask(__name__)
 url = os.getenv("DATABASE_URL")
+#connection = psycopg2.connect(url)
+
 url_alchemy = os.getenv("SQLALCHEMY_DATABASE_URI")
-connection = psycopg2.connect(url)
-
-@app.post("/api/category")
-def create_category():
-    data = request.get_json()
-    name = data["name"]
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute(CREATE_CATEGORIES_TABLE)
-            cursor.execute(INSERT_CATEGORY_RETURN_ID, (name,))
-            category_id = cursor.fetchone()[0]
-    return {"id": category_id, "message": f"Category {name} created."}, 201
-
-
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 
 db = SQLAlchemy(app)
