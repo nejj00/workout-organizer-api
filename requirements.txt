@@ -10,3 +10,4 @@ MarkupSafe
 typing-extensions
 Werkzeug
 zipp
+flask_sqlalchemy
