@@ -35,6 +35,8 @@ def create_category():
     return {"id": category_id, "message": f"Category {name} created."}, 201
 
 
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://kuqcsrau:fV087ploT4AqTOWIrjGayNLd7efX-4In@snuffleupagus.db.elephantsql.com/kuqcsrau'
+
 db = SQLAlchemy(app)
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -44,4 +46,8 @@ class Category(db.Model):
 @app.get("/api/categories")
 def get_all_categories():
     categories = Category.query.all()
-    return jsonify({'categories': [category.name for category in categories]})
+    category_list = []
+    for category in categories:
+        category_list.append({'id': category.id, 'name': category.name})
+
+    return jsonify({'categories': category_list})
