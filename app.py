@@ -38,4 +38,4 @@ def get_all_categories():
     for category in categories:
         category_list.append({'id': category.id, 'name': category.name})
 
-    return jsonify(category_list)
+    return jsonify({'categories': category_list})
