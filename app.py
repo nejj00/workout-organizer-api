@@ -35,7 +35,7 @@ def create_category():
     return {"id": category_id, "message": f"Category {name} created."}, 201
 
 
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://kuqcsrau:fV087ploT4AqTOWIrjGayNLd7efX-4In@snuffleupagus.db.elephantsql.com/kuqcsrau'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 
 db = SQLAlchemy(app)
 class Category(db.Model):
